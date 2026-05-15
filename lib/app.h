@@ -14,9 +14,9 @@ public:
     
     string showAppName();
     string showPassword();
-    string insertAppName(string appName);
-    string insertPassword(string password);
-    string updatePassword(string password);
-    string passwordEncryption(string password);
+    void insertAppName(string appName);
+    void insertPassword(string password);
+    void updatePassword(string password);
+    void passwordEncryption(string password);
 };
 #endif

@@ -23,7 +23,7 @@ string app::showPassword()
     return app::password;
 }
 
-// string app::insertAppName(string appName);
-// string app::insertPassword(string password);
-// string app::updatePassword(string password);
-// string app::passwordEncryption(string password);
+// void app::insertAppName(string appName);
+// void app::insertPassword(string password);
+// void app::updatePassword(string password);
+// void app::passwordEncryption(string password);
