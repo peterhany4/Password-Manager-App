@@ -1,7 +1,7 @@
 #ifndef AUTHENTICATION_H
 #define AUTHENTICATION_H
 #include <string>
-#include "app.h"
+
 using namespace std;
 
 class authentication

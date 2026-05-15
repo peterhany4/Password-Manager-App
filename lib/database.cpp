@@ -5,7 +5,8 @@ using namespace std;
 
 database::database()
 {
-    database::openDB("Password_Manager.db", database::db);
+    char fileName[] = "Password_Manager.db";
+    database::openDB(fileName, database::db);
     database::createTables(database::db);
 }
 
@@ -55,7 +56,7 @@ void database::createTables(sqlite3 *database)
 
     sql = command_2;
 
-    int rc = sqlite3_exec(database, sql, NULL, 0, &errMsg);
+    rc = sqlite3_exec(database, sql, NULL, 0, &errMsg);
 
     if (rc != SQLITE_OK)
     {
