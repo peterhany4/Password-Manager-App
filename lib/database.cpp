@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <database.h>
+#include "authentication.h"
 using namespace std;
 
 database::database()
@@ -27,8 +28,7 @@ void database::createTables(sqlite3 *database)
 {
     char *errMsg;
     char command_1[] = "CREATE TABLE users ("
-                       "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                       "username TEXT UNIQUE NOT NULL,"
+                       "username TEXT PRIMARY KEY,"
                        "password TEXT NOT NULL );";
 
     char *sql = command_1;
@@ -48,11 +48,11 @@ void database::createTables(sqlite3 *database)
 
     char command_2[] = "CREATE TABLE passwords ("
                        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                       "user_id INTEGER,"
+                       "username TEXT,"
                        "app_name TEXT,"
                        "app_username TEXT,"
                        "app_password TEXT,"
-                       "FOREIGN KEY(user_id) REFERENCES users(id) );";
+                       "FOREIGN KEY(username) REFERENCES users(username) );";
 
     sql = command_2;
 
@@ -102,12 +102,11 @@ void database::insertUser(sqlite3 *database, string user_name, string password)
 }
 
 // void database::updateUser(sqlite3 *database);
-void database::insertApp(sqlite3 *database, int id, string app_name, string app_username, string app_password)
+void database::insertApp(sqlite3 *database, authentication user, string app_name, string app_username, string app_password)
 {
     sqlite3_stmt *stmt;
 
-    // 1. Defined the SQL command string clearly
-    const char *sql = "INSERT INTO passwords(user_id, app_name, app_username, app_password) VALUES (?, ?, ?, ?);";
+    const char *sql = "INSERT INTO passwords(username, app_name, app_username, app_password) VALUES (?, ?, ?, ?);";
 
     if (sqlite3_prepare_v2(database, sql, -1, &stmt, nullptr) != SQLITE_OK)
     {
@@ -115,7 +114,7 @@ void database::insertApp(sqlite3 *database, int id, string app_name, string app_
         return;
     }
 
-    sqlite3_bind_int(stmt, 1, id);
+    sqlite3_bind_text(stmt, 1, user.user_name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, app_name.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, app_username.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, app_password.c_str(), -1, SQLITE_TRANSIENT);

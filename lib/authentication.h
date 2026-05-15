@@ -1,22 +1,20 @@
 #ifndef AUTHENTICATION_H
 #define AUTHENTICATION_H
 #include <string>
-
+#include "database.h"
 using namespace std;
+
+class database;
 
 class authentication
 {
 private:
-    int id;
-    string user_name;
     string password;
 
 public:
+    string user_name;
     authentication();
-    authentication(int id, string user_name, string password);
-    void insertUserName(string user_name);
-    void insertAppPassword(string password);
-    void hashingPassword(string password);
+    authentication(string user_name, string password);
+    void insertUser(database db, string user_name, string password);
 };
-
 #endif
