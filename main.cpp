@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <list>
 #include "lib/database.h"
 #include "lib/authentication.h"
 #include "lib/password_class.h"
+#include "lib/databaseToObject.h"
 using namespace std;
 
 class app
@@ -13,10 +15,6 @@ private:
     password_class pass;
 
 public:
-    app()
-    {
-    }
-
     string handleUserInput()
     {
         string input;
@@ -42,6 +40,19 @@ public:
         user.password = handleUserInput();
         cout << '\n';
         user.insertUser(datab, user.user_name, user.password);
+    }
+
+    void showPasswords()
+    {
+        displayData dis;
+        list<passwords> passlist;
+        dis.loadUsersFromDB(datab, passlist);
+
+        cout << "Loaded " << passlist.size() << " password entries.\n";
+        for (const auto &item : passlist)
+        {
+            cout << "ID: " << item.id << " | User: " << item.user << " | App Name: " << item.app_name << " | User Name: " << item.user_name << " | Password: " << item.password << "\n";
+        }
     }
 
     void addPassword()
@@ -78,7 +89,8 @@ public:
         switch (input)
         {
         case 1:
-            break;
+            showPasswords();
+            return home();
         case 2:
             addPassword();
             return home();
@@ -91,6 +103,7 @@ public:
             return home();
         case 0:
             cout << "\nExiting program. Goodbye!\n";
+            datab.closeDB(datab.db);
             exit(0);
         default:
             cout << "Please choose from 0 to 5\n\n\n";
