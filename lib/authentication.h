@@ -8,11 +8,9 @@ class database;
 
 class authentication
 {
-private:
-    string password;
-
 public:
     string user_name;
+    string password;
     authentication();
     authentication(string user_name, string password);
     void insertUser(database db, string user_name, string password);
